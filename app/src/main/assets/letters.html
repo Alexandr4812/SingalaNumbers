@@ -105,6 +105,52 @@ h1 .mark{color:var(--beni);font-style:italic;font-weight:400}
   .lgrid{grid-template-columns:repeat(auto-fill,minmax(78px,1fr))}
   .tgrid{grid-template-columns:repeat(auto-fill,minmax(74px,1fr))}
 }
+/* ---------- тёмная тема: ночная бумага ---------- */
+:root[data-theme="dark"]{
+  --paper:#3b3731;   /* фон страницы: средне-тёмный, светлее оборотов */
+  --card:#474239;    /* лицевые стороны карточек */
+  --ink:#e9e2d4;
+  --sumi:#efe8da;    /* сильная тушь становится светлой */
+  --dim:#b3aa99;
+  --faint:#8f8677;
+  --line:#5d5649;
+  --ai:#9db3c4;
+  --matcha:#a3b899;
+  --beni:#d08a76;
+  --yamabuki:#d9b878;
+}
+::selection{background:var(--yamabuki);color:#26221e}
+:root[data-theme="dark"] ::selection{background:var(--yamabuki);color:#26221e}
+/* обороты карточек остаются чернильно-тёмными со светлым текстом */
+:root[data-theme="dark"] .d-back,
+:root[data-theme="dark"] .s-back,
+:root[data-theme="dark"] .lc-back,
+:root[data-theme="dark"] .demo-back{background:#201d1a;border-color:#201d1a;color:#efe8da}
+:root[data-theme="dark"] .d-back .d-word,
+:root[data-theme="dark"] .s-back .s-word,
+:root[data-theme="dark"] .demo-back .d-word,
+:root[data-theme="dark"] .lc-back .lc-lat{color:#efe8da}
+/* кнопки: светлая бумага на чернилах */
+:root[data-theme="dark"] .cta{background:#e9e2d4;border-color:#e9e2d4;color:#26221e}
+:root[data-theme="dark"] .cta-ghost{background:none;color:#e9e2d4;border-color:#8f8677}
+:root[data-theme="dark"] .ans-yes{background:#e9e2d4;border-color:#e9e2d4;color:#26221e}
+/* нажатые и подсвеченные ячейки */
+:root[data-theme="dark"] .opt.good,
+:root[data-theme="dark"] .tcell.good,
+:root[data-theme="dark"] .tcell.reveal{background:#3e4a3d;border-color:var(--matcha);color:var(--matcha)}
+:root[data-theme="dark"] .opt.bad,
+:root[data-theme="dark"] .tcell.bad{background:#4b3a34;border-color:var(--beni);color:var(--beni)}
+:root[data-theme="dark"] .know.on{background:var(--matcha);border-color:var(--matcha);color:#26221e}
+:root[data-theme="dark"] .mchip{background:#565045}
+:root[data-theme="dark"] .modal{background:rgba(18,16,14,.72)}
+:root[data-theme="dark"] .modal-card{background:#474239;border-color:#8f8677}
+/* слоник: светлый силуэт на ночной бумаге */
+:root[data-theme="dark"] .eleph [fill="#3b3733"]{fill:#ded5c2}
+:root[data-theme="dark"] .eleph [stroke="#3b3733"]{stroke:#ded5c2}
+:root[data-theme="dark"] .eleph [fill="#2c2926"]{fill:#c2b8a4}
+:root[data-theme="dark"] .eleph circle[fill="#f3ecdd"]{fill:#3b3731}
+:root[data-theme="dark"] .eleph path[stroke="#f3ecdd"]{stroke:#3b3731}
+:root[data-theme="dark"] .eleph circle[fill="#e2b478"]{fill:#c9a961}
 </style>
 </head>
 <body>
@@ -360,6 +406,9 @@ function endRound(){
 }
 $('#resAgain').onclick=startRound;
 $('#resTable').onclick=()=>switchTab('table');
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
 
 renderTable();
 renderSigns();

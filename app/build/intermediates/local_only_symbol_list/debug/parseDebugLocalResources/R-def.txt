@@ -4,7 +4,12 @@ color black
 color purple_500
 color white
 drawable ic_launcher
+id btnAbout
+id btnLanguage
+id btnTheme
+id toolbar_main
 id webView
 layout activity_main
+layout toolbar_main
 string app_name
 style Theme.SingalaNumbers

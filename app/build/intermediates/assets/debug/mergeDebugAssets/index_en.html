@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>සිංහල · Sinhala numbers</title>
+<style>
+:root{
+  --paper:#efe8da; --card:#f7f1e3;
+  --ink:#342f28; --sumi:#24221f;
+  --dim:#7a7265; --faint:#a79d8b;
+  --line:#d4c9b0;
+  --ai:#5a6b7a;
+  --matcha:#7a8c6e;
+  --beni:#b8695a;
+  --yamabuki:#c9a961;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{overflow-x:hidden;max-width:100%}
+::selection{background:var(--yamabuki);color:var(--sumi)}
+body{
+  font-family:Georgia,'Times New Roman','Noto Sans Sinhala',serif;
+  background:var(--paper);color:var(--ink);
+  min-height:100vh;touch-action:pan-y;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+
+.masthead{padding:34px 0 18px;border-bottom:3px double var(--sumi)}
+.kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ai)}
+h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:700;margin:6px 0 12px;letter-spacing:-.5px}
+h1 .mark{color:var(--beni);font-style:italic;font-weight:400}
+.eleph{width:1.1em;height:1.1em;flex:none;display:inline-block;vertical-align:middle}
+.stats{display:flex;gap:22px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line);font-size:.8rem;color:var(--dim)}
+.stats b{color:var(--ink);font-weight:600}
+.hint{margin-top:14px;font-size:.88rem;color:var(--dim)}
+.hint summary{cursor:pointer;list-style:none;user-select:none;display:inline-flex;align-items:center;gap:8px;padding:4px 0;color:var(--ai);border-bottom:1px dotted var(--ai)}
+.hint summary::-webkit-details-marker{display:none}
+.hint summary .ico{display:inline-block;width:14px;height:14px;border:1px solid var(--ai);border-radius:50%;font-size:.7rem;line-height:12px;text-align:center;font-family:sans-serif;font-weight:700;transition:transform .25s}
+.hint[open] summary .ico{transform:rotate(45deg)}
+.hint p{margin-top:10px;line-height:1.65;color:var(--dim);max-width:60ch}
+
+/* ---------- demo card ---------- */
+.demo{text-align:center;padding:28px 0 8px}
+.demo-label{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ai);margin-bottom:12px}
+.demo-card{
+  display:inline-block;width:200px;height:260px;perspective:900px;cursor:pointer;user-select:none;
+}
+.demo-card{transition:opacity .35s ease}
+.demo-card.flipped .demo-inner{transform:rotateY(180deg)}
+.demo-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .6s ease}
+.demo-face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border:1px solid var(--line);border-radius:3px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px;
+  transform:rotateY(0deg) translateZ(0);
+}
+.demo-front{background:var(--card)}
+.demo-front .d-num{font-size:3.4rem;font-weight:700;color:var(--sumi);line-height:1}
+.demo-front .d-si{font-size:.9rem;color:var(--ai)}
+.demo-back{
+  transform:rotateY(180deg) translateZ(0);
+  background:var(--sumi);color:var(--paper);border-color:var(--sumi);
+}
+.demo-back .d-word{font-size:1.55rem;font-weight:600;line-height:1.2;text-align:center}
+.demo-back .d-meta{font-size:.7rem;color:var(--yamabuki);opacity:.8}
+
+.tabs{display:flex;gap:26px;flex-wrap:wrap;border-bottom:1px solid var(--sumi);padding:12px 0;margin-top:4px}
+.tab{background:none;border:none;font-family:inherit;font-size:.88rem;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);cursor:pointer;padding:4px 2px;border-bottom:2px solid transparent}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--sumi);border-bottom-color:var(--beni)}
+.panel{display:none;padding:24px 0 40px}
+.panel.active{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0}}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--card);border:1px solid var(--line);padding:6px 13px;font-family:inherit;font-size:.8rem;color:var(--dim);cursor:pointer;border-radius:2px;transition:.15s}
+.chip:hover{border-color:var(--ai);color:var(--ink)}
+.chip.on{border-color:var(--sumi);color:var(--sumi);background:var(--paper)}
+.ghost{background:none;border:none;font-family:inherit;font-size:.78rem;color:var(--ai);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-style:dotted}
+.ghost:hover{color:var(--beni)}
+.cta{font-family:inherit;font-size:.92rem;letter-spacing:.04em;padding:12px 26px;background:var(--sumi);color:var(--paper);border:1px solid var(--sumi);cursor:pointer;border-radius:2px;transition:.15s;display:inline-block;text-decoration:none}
+.cta:hover{background:var(--ink)}
+.cta-ghost{background:none;color:var(--sumi);border-color:var(--line)}
+.cta-ghost:hover{border-color:var(--sumi)}
+.cta-link{padding:10px 20px;font-size:.86rem}
+
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 18px}
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.dcard{aspect-ratio:4/5;perspective:800px;cursor:pointer;user-select:none;border-radius:3px}
+.dcard:focus-visible{outline:1px dashed var(--ai);outline-offset:3px}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .5s ease}
+.dcard.flipped .flip-inner,.scard.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);background:var(--card);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px;transform:rotateY(0deg) translateZ(0)}
+.d-front .d-num{font-size:2rem;font-weight:700;line-height:1;color:var(--sumi)}
+.d-si{font-size:.78rem;color:var(--ai)}
+.badge{position:absolute;top:6px;right:9px;color:var(--matcha);opacity:0;font-size:.8rem;transition:opacity .2s}
+.is-known .badge{opacity:1}
+.d-back{transform:rotateY(180deg) translateZ(0);background:var(--sumi);color:var(--paper);border-color:var(--sumi)}
+.d-word{font-weight:600;text-align:center;line-height:1.15;color:var(--paper)}
+.wl-s{font-size:1.5rem}.wl-m{font-size:1.3rem}.wl-l{font-size:1.1rem}.wl-xl{font-size:.95rem}
+.d-meta{font-size:.68rem;opacity:.65;color:var(--yamabuki)}
+.know{margin-top:6px;font-family:inherit;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid currentColor;background:none;color:inherit;padding:4px 10px;cursor:pointer;border-radius:2px}
+.know:hover{color:var(--matcha);border-color:var(--matcha)}
+.know.on{background:var(--matcha);border-color:var(--matcha);color:var(--paper)}
+.empty{grid-column:1/-1;border:1px dashed var(--line);padding:48px 20px;text-align:center;color:var(--dim);line-height:1.7}
+
+.advanced-block{margin-top:28px;padding:22px;border:1px dashed var(--line);background:var(--card);display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.advanced-block .info{color:var(--dim);font-size:.88rem;line-height:1.5}
+.advanced-block .info b{color:var(--ink)}
+
+.setup{max-width:600px;margin:12px auto 0;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+.p-title{font-size:1.3rem;font-weight:700;position:relative;padding-left:22px}
+.p-title::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:14px;height:14px;background:var(--beni);border-radius:50%;opacity:.85}
+.p-sub{color:var(--dim);line-height:1.65;max-width:56ch}
+.stage{display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:6px}
+.s-top{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:.8rem;color:var(--dim)}
+.s-top b{color:var(--ink);font-weight:600}
+.scard{width:min(420px,100%);height:260px;perspective:900px;cursor:pointer;user-select:none}
+.scard.out-good{animation:fadeout .3s ease-in forwards}
+@keyframes fadeout{to{opacity:0;transform:scale(.96)}}
+.scard.out-bad{animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(7px)}75%{transform:translateX(-5px)}}
+.s-front .s-num{font-size:4rem;font-weight:700;line-height:1;color:var(--sumi)}
+.s-front .s-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ai)}
+.s-hint{font-size:.72rem;color:var(--faint);font-style:italic}
+.s-back{transform:rotateY(180deg) translateZ(0);background:var(--sumi);color:var(--paper);border-color:var(--sumi)}
+.s-word{font-weight:600;text-align:center;padding:0 14px;line-height:1.2;color:var(--paper)}
+.s-word.wl-s{font-size:2.2rem}.s-word.wl-m{font-size:1.9rem}.s-word.wl-l{font-size:1.6rem}.s-word.wl-xl{font-size:1.3rem}
+.s-si{color:var(--yamabuki);font-size:.9rem}
+.s-meta{font-size:.75rem;opacity:.6;color:var(--yamabuki)}
+.s-prog{width:min(420px,100%);height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.s-prog i{display:block;height:100%;width:0;background:var(--matcha);transition:width .4s}
+.s-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.ans{font-family:inherit;font-size:.9rem;padding:12px 22px;border-radius:2px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);transition:.15s}
+.ans:hover:not(:disabled){border-color:var(--sumi)}
+.ans-yes{background:var(--sumi);color:var(--paper);border-color:var(--sumi)}
+.ans-yes:hover:not(:disabled){background:var(--ink)}
+.ans:disabled{opacity:.4;cursor:default}
+.keys-hint{font-size:.72rem;color:var(--faint);font-style:italic}
+
+#quizRunner{max-width:560px;margin:0 auto}
+.q-hud{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;font-size:.8rem;color:var(--dim)}
+.q-hud b{color:var(--ink);font-weight:600}
+.qcard{border:1px solid var(--line);background:var(--card);padding:30px 20px;text-align:center}
+.q-label{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ai)}
+.q-big{font-size:2.6rem;font-weight:700;margin-top:8px;line-height:1.1;color:var(--sumi)}
+.q-big.q-word{font-size:1.7rem;color:var(--beni);font-style:italic}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.opt{border:1px solid var(--line);background:var(--card);padding:14px;font-family:inherit;font-size:1rem;color:var(--ink);cursor:pointer;border-radius:2px;transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--ai);background:var(--paper)}
+.opt:disabled{cursor:default}
+.opt.good{border-color:var(--matcha);color:var(--matcha);background:#eef1e8}
+.opt.bad{border-color:var(--beni);color:var(--beni);background:#f3ece8;animation:shake .35s}
+.res-card{border:1px solid var(--sumi);background:var(--card);padding:34px 22px;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;max-width:560px;margin:0 auto}
+.res-score{font-size:2.8rem;font-weight:700;color:var(--sumi)}
+.missed{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.mchip{border:1px solid var(--line);padding:4px 10px;font-size:.8rem;color:var(--dim);border-radius:2px;background:var(--paper)}
+.mchip b{color:var(--beni)}
+
+.foot{border-top:3px double var(--sumi);margin-top:48px;padding:14px 0 40px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--dim)}
+.foot .mark{color:var(--beni);font-style:italic}
+
+@media(max-width:560px){
+  .opts{grid-template-columns:1fr}
+  .deck{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .toolbar{flex-direction:column;align-items:flex-start}
+  .stats{font-size:.76rem;gap:14px}
+  .demo-card{width:170px;height:220px}
+  .demo-front .d-num{font-size:2.8rem}
+}
+/* ---------- dark theme: night paper ---------- */
+:root[data-theme="dark"]{
+  --paper:#3b3731;
+  --card:#474239;
+  --ink:#e9e2d4;
+  --sumi:#efe8da;
+  --dim:#b3aa99;
+  --faint:#8f8677;
+  --line:#5d5649;
+  --ai:#9db3c4;
+  --matcha:#a3b899;
+  --beni:#d08a76;
+  --yamabuki:#d9b878;
+}
+::selection{background:var(--yamabuki);color:#26221e}
+:root[data-theme="dark"] ::selection{background:var(--yamabuki);color:#26221e}
+:root[data-theme="dark"] .d-back,
+:root[data-theme="dark"] .s-back,
+:root[data-theme="dark"] .lc-back,
+:root[data-theme="dark"] .demo-back{background:#201d1a;border-color:#201d1a;color:#efe8da}
+:root[data-theme="dark"] .d-back .d-word,
+:root[data-theme="dark"] .s-back .s-word,
+:root[data-theme="dark"] .demo-back .d-word,
+:root[data-theme="dark"] .lc-back .lc-lat{color:#efe8da}
+:root[data-theme="dark"] .cta{background:#e9e2d4;border-color:#e9e2d4;color:#26221e}
+:root[data-theme="dark"] .cta-ghost{background:none;color:#e9e2d4;border-color:#8f8677}
+:root[data-theme="dark"] .ans-yes{background:#e9e2d4;border-color:#e9e2d4;color:#26221e}
+:root[data-theme="dark"] .opt.good,
+:root[data-theme="dark"] .tcell.good,
+:root[data-theme="dark"] .tcell.reveal{background:#3e4a3d;border-color:var(--matcha);color:var(--matcha)}
+:root[data-theme="dark"] .opt.bad,
+:root[data-theme="dark"] .tcell.bad{background:#4b3a34;border-color:var(--beni);color:var(--beni)}
+:root[data-theme="dark"] .know.on{background:var(--matcha);border-color:var(--matcha);color:#26221e}
+:root[data-theme="dark"] .mchip{background:#565045}
+:root[data-theme="dark"] .modal{background:rgba(18,16,14,.72)}
+:root[data-theme="dark"] .modal-card{background:#474239;border-color:#8f8677}
+:root[data-theme="dark"] .eleph [fill="#3b3733"]{fill:#ded5c2}
+:root[data-theme="dark"] .eleph [stroke="#3b3733"]{stroke:#ded5c2}
+:root[data-theme="dark"] .eleph [fill="#2c2926"]{fill:#c2b8a4}
+:root[data-theme="dark"] .eleph circle[fill="#f3ecdd"]{fill:#3b3731}
+:root[data-theme="dark"] .eleph path[stroke="#f3ecdd"]{stroke:#3b3731}
+:root[data-theme="dark"] .eleph circle[fill="#e2b478"]{fill:#c9a961}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="kicker">සිංහල · study cards</div>
+    <h1>Sinhala <span class="mark">numbers</span>
+    <svg class="eleph" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="310" cy="180" r="105" fill="#e2b478"/>
+        <path d="M415,250C438,268 442,300 430,326" fill="none" stroke="#3b3733" stroke-width="10" stroke-linecap="round"/>
+        <rect x="212" y="340" width="34" height="84" fill="#3b3733"/>
+        <rect x="258" y="344" width="34" height="80" fill="#3b3733"/>
+        <rect x="330" y="344" width="34" height="80" fill="#3b3733"/>
+        <rect x="376" y="314" width="34" height="110" fill="#3b3733"/>
+        <ellipse cx="305" cy="285" rx="112" ry="88" fill="#3b3733"/>
+        <circle cx="180" cy="240" r="64" fill="#3b3733"/>
+        <circle cx="205" cy="248" r="42" fill="#2c2926"/>
+        <path d="M138,262C104,246 88,208 96,168" fill="none" stroke="#3b3733" stroke-width="30" stroke-linecap="round"/>
+        <path d="M150,282C158,296 170,300 180,296" fill="none" stroke="#f3ecdd" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="163" cy="228" r="7" fill="#f3ecdd"/>
+        <rect x="60" y="168" width="76" height="10" fill="#b98a5a"/>
+        <path d="M66,178h64v64l-32,26l-32,-26z" fill="#f7f1e3"/>
+        <rect x="76" y="190" width="44" height="40" fill="none" stroke="#8a6a44" stroke-width="4"/>
+        <path d="M76,203h44M76,217h44" fill="none" stroke="#8a6a44" stroke-width="3"/>
+        <circle cx="88" cy="203" r="5" fill="#b8695a"/>
+        <circle cx="100" cy="203" r="5" fill="#7a8c6e"/>
+        <circle cx="94" cy="217" r="5" fill="#c9a961"/>
+        <circle cx="106" cy="217" r="5" fill="#5a6b7a"/>
+      </svg></h1>
+    <details class="hint">
+      <summary><span class="ico">+</span> How to use</summary>
+      <p>46 words — from <b>eka</b> to <b>dahasa</b>. Browse the deck, train in Study mode and test yourself in Quiz. Mark cards as known — they go into stats and records.</p>
+    </details>
+  </header>
+  <div class="stats">
+    <span>Learned: <b id="knownTxt">0 / 46</b></span>
+    <span>Quiz record: <b id="bestTxt">—</b></span>
+    <span>1–19 basic · 20–91 tens · 100–1000 hundreds</span>
+  </div>
+
+  <div class="demo">
+    <div class="demo-label">card of the moment</div>
+    <div class="demo-card" id="demoCard">
+      <div class="demo-inner">
+        <div class="demo-face demo-front">
+          <span class="d-num" id="demoNum">7</span>
+          <span class="d-si" id="demoSi">හත</span>
+        </div>
+        <div class="demo-face demo-back">
+          <span class="d-word" id="demoWord">hatha</span>
+          <span class="d-meta" id="demoMeta">7 · හත</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="deck">Deck · 46</button>
+    <button class="tab" data-tab="study">Study</button>
+    <button class="tab" data-tab="quiz">Quiz</button>
+  </nav>
+
+  <main>
+    <section class="panel active" id="panel-deck">
+      <div class="toolbar">
+        <div class="chips" id="deckFilters">
+          <button class="chip on" data-f="all">All · 46</button>
+          <button class="chip" data-f="b">1–19</button>
+          <button class="chip" data-f="tens">20–91</button>
+          <button class="chip" data-f="hund">100–1000</button>
+          <button class="chip" data-f="unk" id="chipUnk">Unlearned · 46</button>
+        </div>
+        <button class="ghost" id="revealBtn">Show answers</button>
+      </div>
+      <div class="deck" id="deckGrid"></div>
+
+      <div class="advanced-block">
+        <div class="info">
+          <b>Ready for advanced numbers?</b><br>
+          125, 375, 1500, 2345 and more — hundreds and thousands with tens.
+        </div>
+        <a href="advanced_en.html" class="cta cta-link">Advanced numbers →</a>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-study">
+      <div id="studySetup" class="setup">
+        <h2 class="p-title">Trainer</h2>
+        <p class="p-sub">A card shows the number — recall the word, flip the card, and judge yourself honestly. «Know» marks the word as learned forever.</p>
+        <div class="chips">
+          <button class="chip on" id="scopeAll">All cards</button>
+          <button class="chip" id="scopeUnk">Only unlearned</button>
+          <button class="chip" id="shuffleChip">Shuffle: off</button>
+        </div>
+        <button class="cta" id="studyStart">Start training →</button>
+      </div>
+      <div id="studyRunner" class="stage" hidden>
+        <div class="s-top">
+          <span>Left: <b id="stLeft">0</b></span>
+          <span>Know: <b id="stKnow">0</b></span>
+          <span>Repeats: <b id="stRep">0</b></span>
+          <button class="ghost" id="studyQuit">quit</button>
+        </div>
+        <div class="scard" id="studyCard">
+          <div class="flip-inner">
+            <div class="face s-front">
+              <span class="s-label">how do you say in Sinhala…</span>
+              <span class="s-num" id="sNum">13</span>
+              <span class="s-hint">tap to flip</span>
+            </div>
+            <div class="face s-back">
+              <span class="s-word" id="sWord">dahatuna</span>
+              <span class="s-si" id="sSi">දහතුන</span>
+              <span class="s-meta" id="sMeta">13</span>
+            </div>
+          </div>
+        </div>
+        <div class="s-prog"><i id="stProg"></i></div>
+        <div class="s-btns">
+          <button class="ans" id="btnNo" disabled>Don't know</button>
+          <button class="ans ans-yes" id="btnYes" disabled>Know ✓</button>
+        </div>
+        <p class="keys-hint">space — flip · ← don't know · → know</p>
+      </div>
+      <div id="studyFinish" class="setup" hidden>
+        <h2 class="p-title">Round finished</h2>
+        <p class="p-sub" id="finText"></p>
+        <div class="s-btns">
+          <button class="cta" id="finAgain">Again</button>
+          <button class="cta cta-ghost" id="finMiss" hidden>Repeat difficult</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-quiz">
+      <div id="quizSetup" class="setup">
+        <h2 class="p-title">Self-test</h2>
+        <p class="p-sub">10 questions, four options. Pick a direction — or trust the mix.</p>
+        <div class="chips" id="quizDirs">
+          <button class="chip on" data-dir="mix">Mix</button>
+          <button class="chip" data-dir="n2w">Number → word</button>
+          <button class="chip" data-dir="w2n">Word → number</button>
+        </div>
+        <button class="cta" id="quizStart">Start round →</button>
+      </div>
+      <div id="quizRunner" hidden>
+        <div class="q-hud">
+          <span>Question <b id="qNum">1</b>/10</span>
+          <span>correct: <b id="qScore">0</b></span>
+          <span>streak: <b id="qStreak">0</b></span>
+        </div>
+        <div class="qcard">
+          <span class="q-label" id="qLabel">How do you say in Sinhala</span>
+          <div class="q-big" id="qBig">13</div>
+        </div>
+        <div class="opts" id="qOpts"></div>
+      </div>
+      <div id="quizResults" hidden>
+        <div class="res-card">
+          <div class="res-score" id="resScore">0/10</div>
+          <p class="p-sub" id="resMsg"></p>
+          <div class="missed" id="resMissed"></div>
+          <div class="s-btns">
+            <button class="cta" id="resAgain">Next round</button>
+            <button class="cta cta-ghost" id="resStudy" hidden>Study difficult</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span><span class="mark">සුබ පැතුම්</span> — good luck memorizing!</span>
+    <span><a class="ghost" href="menu_en.html">menu</a> · <button class="ghost" id="resetBtn">reset progress</button></span>
+  </footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const SI={1:'එක',2:'දෙක',3:'තුන',4:'හතර',5:'පහ',6:'හය',7:'හත',8:'අට',9:'නවය',10:'දහය',11:'එකොළහ',12:'දොළහ',13:'දහතුන',14:'දහහතර',15:'පහළොව',16:'දහසය',17:'දහහත',18:'දහඅට',19:'දහනවය',20:'විස්ස',21:'විසි එක',30:'තිහ',31:'තිස් එක',40:'හතළිහ',41:'හතළිස් එක',50:'පනහ',51:'පනස් එක',60:'හැට',61:'හැට එක',70:'හැත්තෑව',71:'හැත්ත එක',80:'අසූව',81:'අසූ එක',90:'අනූව',91:'අනූ එක',100:'සියය',200:'දෙසියය',300:'තුන්සියය',400:'හතරසියය',500:'පන්සියය',600:'හයසියය',700:'හත්සියය',800:'අටසියය',900:'නවසියය',1000:'දහස'};
+const WORDS=[[1,'eka'],[2,'deka'],[3,'tuna'],[4,'hathara'],[5,'paha'],[6,'haya'],[7,'hatha'],[8,'ata'],[9,'nava'],[10,'dahaya'],[11,'ekolaha'],[12,'dolaha'],[13,'dahatuna'],[14,'dahathara'],[15,'pahalova'],[16,'dahasaya'],[17,'dahatha'],[18,'daha-ata'],[19,'dahanavaya'],[20,'vissa'],[21,'visi eka'],[30,'thiha'],[31,'this eka'],[40,'hathaliha'],[41,'hathalis eka'],[50,'panaha'],[51,'panas eka'],[60,'heta'],[61,'heta eka'],[70,'heththeva'],[71,'heththa eka'],[80,'asuva'],[81,'asu eka'],[90,'anuva'],[91,'anu eka'],[100,'siya'],[200,'de siya'],[300,'tun siya'],[400,'hathara siya'],[500,'pan siya'],[600,'haya siya'],[700,'hatha siya'],[800,'ata siya'],[900,'nava siya'],[1000,'dahasa']].map(p=>({n:p[0],w:p[1],si:SI[p[0]],grp:p[0]>=100?'hundreds':p[0]>=20?'tens':'basic'}));
+const TOTAL=WORDS.length;
+const KEY='sinhala-cards-v1';
+let store=(()=>{try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&typeof s==='object')return{known:s.known||{},best:+s.best||0};}catch(e){}return{known:{},best:0};})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;};
+const wlClass=w=>{const L=w.length;return L<=4?'wl-s':L<=6?'wl-m':L<=8?'wl-l':'wl-xl';};
+
+function updateStats(){
+  const kc=Object.keys(store.known).length;
+  $('#knownTxt').textContent=kc+' / '+TOTAL;
+  $('#bestTxt').textContent=store.best?store.best+'/10':'—';
+  $('#chipUnk').textContent='Unlearned · '+(TOTAL-kc);
+}
+
+/* ---------- demo card ---------- */
+let demoFlipped=true, demoIdx=Math.floor(Math.random()*TOTAL), demoTimer=null;
+
+function setDemoCard(){
+  const w=WORDS[demoIdx];
+  $('#demoNum').textContent=w.n;
+  $('#demoSi').textContent=w.si;
+  $('#demoWord').textContent=w.w;
+  $('#demoMeta').textContent=w.n+' · '+w.si+' · '+w.grp;
+}
+
+function demoFadeSwap(){
+  const card=$('#demoCard');
+  card.style.transition='opacity .35s ease';
+  card.style.opacity='0';
+  setTimeout(()=>{
+    let newIdx;
+    do{ newIdx=Math.floor(Math.random()*TOTAL); }while(newIdx===demoIdx);
+    demoIdx=newIdx;
+    setDemoCard();
+    if(demoFlipped){
+      demoFlipped=false;
+      card.classList.remove('flipped');
+    }
+    card.style.opacity='1';
+  },360);
+}
+
+$('#demoCard').onclick=()=>{
+  demoFlipped=!demoFlipped;
+  $('#demoCard').classList.toggle('flipped',demoFlipped);
+};
+
+setDemoCard();
+$('#demoCard').classList.add('flipped');
+demoTimer=setInterval(demoFadeSwap,8000);
+
+/* ---------- deck ---------- */
+let curFilter='all', reveal=false;
+function renderDeck(){
+  const g=$('#deckGrid'); g.innerHTML='';
+  const list=WORDS.filter(w=>curFilter==='all'?true:curFilter==='b'?w.n<20:curFilter==='tens'?(w.n>=20&&w.n<100):curFilter==='hund'?w.n>=100:!store.known[w.n]);
+  if(!list.length){g.innerHTML='<div class="empty">All learned! ✦<br>Check the Quiz or reset progress.</div>';return;}
+  list.forEach(w=>{
+    const d=document.createElement('div');
+    d.className='dcard'+(store.known[w.n]?' is-known':'');
+    d.tabIndex=0; d.setAttribute('role','button'); d.setAttribute('aria-label',w.n+' — '+w.w);
+    d.innerHTML='<div class="flip-inner">'+
+      '<div class="face d-front"><span class="badge">✦</span>'+
+        '<span class="d-num">'+w.n+'</span><span class="d-si">'+w.si+'</span></div>'+
+      '<div class="face d-back">'+
+        '<span class="d-word '+wlClass(w.w)+'">'+w.w+'</span>'+
+        '<span class="d-meta">'+w.n+' · '+w.si+' · '+w.grp+'</span>'+
+        '<button class="know'+(store.known[w.n]?' on':'')+'" data-n="'+w.n+'">'+(store.known[w.n]?'✦ learned':'✓ know')+'</button>'+
+      '</div></div>';
+    d.addEventListener('click',e=>{if(e.target.closest('.know'))return;d.classList.toggle('flipped');});
+    d.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();d.classList.toggle('flipped');}});
+    d.querySelector('.know').addEventListener('click',e=>{
+      e.stopPropagation();
+      const n=+e.currentTarget.dataset.n;
+      if(store.known[n])delete store.known[n];else store.known[n]=1;
+      save();updateStats();
+      e.currentTarget.classList.toggle('on',!!store.known[n]);
+      e.currentTarget.textContent=store.known[n]?'✦ learned':'✓ know';
+      d.classList.toggle('is-known',!!store.known[n]);
+      if(curFilter==='unk')renderDeck();
+    });
+    g.appendChild(d);
+  });
+  if(reveal)$$('#deckGrid .dcard').forEach(c=>c.classList.add('flipped'));
+}
+$('#deckFilters').addEventListener('click',e=>{
+  const b=e.target.closest('.chip');if(!b)return;
+  $$('#deckFilters .chip').forEach(c=>c.classList.remove('on'));b.classList.add('on');
+  curFilter=b.dataset.f;reveal=false;$('#revealBtn').textContent='Show answers';renderDeck();
+});
+$('#revealBtn').onclick=()=>{
+  reveal=!reveal;
+  $$('#deckGrid .dcard').forEach(c=>c.classList.toggle('flipped',reveal));
+  $('#revealBtn').textContent=reveal?'Hide answers':'Show answers';
+};
+
+function switchTab(n){
+  $$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===n));
+  $$('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+n));
+}
+$$('.tab').forEach(t=>t.onclick=()=>switchTab(t.dataset.tab));
+
+let studyScope='all', studyShuffle=false, studyList=[], study={active:false,queue:[],total:0,know:0,rep:0,miss:new Set(),flipped:false,busy:false};
+$('#scopeAll').onclick=()=>{studyScope='all';$('#scopeAll').classList.add('on');$('#scopeUnk').classList.remove('on');};
+$('#scopeUnk').onclick=()=>{studyScope='unk';$('#scopeUnk').classList.add('on');$('#scopeAll').classList.remove('on');};
+$('#shuffleChip').onclick=()=>{studyShuffle=!studyShuffle;$('#shuffleChip').textContent='Shuffle: '+(studyShuffle?'on':'off');$('#shuffleChip').classList.toggle('on',studyShuffle);};
+$('#studyStart').onclick=()=>{
+  const list=studyScope==='all'?[...WORDS]:WORDS.filter(w=>!store.known[w.n]);
+  if(!list.length){alert('No unlearned cards — you know them all! ✦');return;}
+  startStudy(list);
+};
+function startStudy(list){
+  studyList=list.map(w=>w.n);
+  study={active:true,queue:studyShuffle?shuffle([...list]):[...list],total:list.length,know:0,rep:0,miss:new Set(),flipped:false,busy:false};
+  $('#studySetup').hidden=true;$('#studyFinish').hidden=true;$('#studyRunner').hidden=false;
+  showStudyCard();
+}
+function showStudyCard(){
+  const w=study.queue[0];
+  study.flipped=false;study.busy=false;
+  const sc=$('#studyCard');sc.classList.remove('flipped','out-good','out-bad');
+  $('#sNum').textContent=w.n;
+  $('#sWord').textContent=w.w;$('#sWord').className='s-word '+wlClass(w.w);
+  $('#sSi').textContent=w.si;$('#sMeta').textContent=w.n+' · '+w.grp;
+  $('#btnYes').disabled=true;$('#btnNo').disabled=true;
+  studyHud();
+}
+function studyHud(){
+  $('#stLeft').textContent=study.queue.length;
+  $('#stKnow').textContent=study.know;
+  $('#stRep').textContent=study.rep;
+  $('#stProg').style.width=((study.total-study.queue.length)/study.total*100)+'%';
+}
+function flipStudy(){
+  if(!study.active||study.busy)return;
+  study.flipped=!study.flipped;
+  $('#studyCard').classList.toggle('flipped',study.flipped);
+  $('#btnYes').disabled=!study.flipped;$('#btnNo').disabled=!study.flipped;
+}
+$('#studyCard').onclick=flipStudy;
+function answerStudy(k){
+  if(!study.active||study.busy||!study.flipped)return;
+  study.busy=true;
+  const w=study.queue.shift();
+  const sc=$('#studyCard');
+  if(k){store.known[w.n]=1;save();updateStats();study.know++;sc.classList.add('out-good');}
+  else{study.queue.push(w);study.rep++;study.miss.add(w.n);sc.classList.add('out-bad');}
+  studyHud();
+  setTimeout(()=>{if(!study.queue.length)finishStudy();else showStudyCard();},k?300:420);
+}
+$('#btnYes').onclick=()=>answerStudy(true);
+$('#btnNo').onclick=()=>answerStudy(false);
+$('#studyQuit').onclick=()=>{study.active=false;$('#studyRunner').hidden=true;$('#studySetup').hidden=false;};
+function finishStudy(){
+  study.active=false;
+  $('#studyRunner').hidden=true;$('#studyFinish').hidden=false;
+  $('#finText').innerHTML='Marked as learned: <b>'+study.know+'</b> · repeats needed: <b>'+study.rep+'</b>. Keep it up!';
+  $('#finMiss').hidden=study.miss.size===0;
+}
+$('#finAgain').onclick=()=>{startStudy(studyList.map(n=>WORDS.find(w=>w.n===n)));};
+$('#finMiss').onclick=()=>{startStudy(WORDS.filter(w=>study.miss.has(w.n)));};
+document.addEventListener('keydown',e=>{
+  if(!$('#panel-study').classList.contains('active')||$('#studyRunner').hidden)return;
+  if(e.code==='Space'){e.preventDefault();flipStudy();}
+  else if(e.key==='ArrowRight'){answerStudy(true);}
+  else if(e.key==='ArrowLeft'){answerStudy(false);}
+});
+
+let quizDir='mix', quiz={active:false,qs:[],qi:0,score:0,streak:0,missed:[],locked:false};
+$$('#quizDirs .chip').forEach(c=>c.onclick=()=>{$$('#quizDirs .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');quizDir=c.dataset.dir;});
+$('#quizStart').onclick=startRound;
+function startRound(){
+  const pool=shuffle([...WORDS]).slice(0,10);
+  quiz={active:true,qs:pool.map(w=>{
+    const dir=quizDir==='mix'?(Math.random()<.5?'n2w':'w2n'):quizDir;
+    const others=shuffle(WORDS.filter(x=>x.n!==w.n)).slice(0,3);
+    let opts,answer;
+    if(dir==='n2w'){answer=w.w;opts=shuffle([w.w].concat(others.map(o=>o.w)));}
+    else{answer=String(w.n);opts=shuffle([String(w.n)].concat(others.map(o=>String(o.n))));}
+    return{w:w,dir:dir,opts:opts,answer:answer};
+  }),qi:0,score:0,streak:0,missed:[],locked:false};
+  $('#quizSetup').hidden=true;$('#quizResults').hidden=true;$('#quizRunner').hidden=false;
+  showQ();
+}
+function showQ(){
+  const q=quiz.qs[quiz.qi];quiz.locked=false;
+  $('#qNum').textContent=quiz.qi+1;$('#qScore').textContent=quiz.score;$('#qStreak').textContent=quiz.streak;
+  $('#qLabel').textContent=q.dir==='n2w'?'How do you say in Sinhala':'What does the word mean';
+  const big=$('#qBig');
+  if(q.dir==='n2w'){big.textContent=q.w.n;big.classList.remove('q-word');}
+  else{big.textContent='«'+q.w.w+'»';big.classList.add('q-word');}
+  const box=$('#qOpts');box.innerHTML='';
+  q.opts.forEach(o=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;b.dataset.v=o;
+    b.onclick=()=>pick(b,q);
+    box.appendChild(b);
+  });
+}
+function pick(btn,q){
+  if(quiz.locked)return;quiz.locked=true;
+  const ok=btn.dataset.v===q.answer;
+  $$('#qOpts .opt').forEach(b=>b.disabled=true);
+  if(ok){btn.classList.add('good');quiz.score++;quiz.streak++;}
+  else{btn.classList.add('bad');quiz.streak=0;quiz.missed.push(q.w);
+    $$('#qOpts .opt').forEach(b=>{if(b.dataset.v===q.answer)b.classList.add('good');});}
+  $('#qScore').textContent=quiz.score;$('#qStreak').textContent=quiz.streak;
+  setTimeout(()=>{quiz.qi++;if(quiz.qi<quiz.qs.length)showQ();else endRound();},ok?700:1200);
+}
+function endRound(){
+  quiz.active=false;
+  $('#quizRunner').hidden=true;$('#quizResults').hidden=false;
+  $('#resScore').textContent=quiz.score+'/10';
+  const s=quiz.score;
+  $('#resMsg').textContent=s===10?'Perfect! All ten — a true master of dahasa!':s>=8?'Great! Just a bit more to perfect.':s>=6?'Good! A little more practice and it will be perfect.':s>=4?'Not bad, but the deck awaits a revisit.':'Check the Study mode — and you will get there!';
+  const miss=[];const seen={};
+  quiz.missed.forEach(w=>{if(!seen[w.n]){seen[w.n]=1;miss.push(w);}});
+  $('#resMissed').innerHTML=miss.map(w=>'<span class="mchip"><b>'+w.w+'</b>'+w.n+'</span>').join('');
+  $('#resStudy').hidden=miss.length===0;
+  if(s>store.best){store.best=s;save();updateStats();}
+}
+$('#resAgain').onclick=startRound;
+$('#resStudy').onclick=()=>{
+  const miss=[];const seen={};
+  quiz.missed.forEach(w=>{if(!seen[w.n]){seen[w.n]=1;miss.push(w);}});
+  switchTab('study');startStudy(miss);
+};
+
+$('#resetBtn').onclick=()=>{
+  if(!confirm('Reset all progress and records?'))return;
+  store={known:{},best:0};save();updateStats();
+  reveal=false;$('#revealBtn').textContent='Show answers';renderDeck();
+  study.active=false;$('#studyRunner').hidden=true;$('#studyFinish').hidden=true;$('#studySetup').hidden=false;
+  quiz.active=false;$('#quizRunner').hidden=true;$('#quizResults').hidden=true;$('#quizSetup').hidden=false;
+};
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+
+updateStats();
+renderDeck();
+</script>
+</body>
+</html>

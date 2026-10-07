@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>සිංහල · menu</title>
+<style>
+:root{
+  --paper:#efe8da; --card:#f7f1e3;
+  --ink:#342f28; --sumi:#24221f;
+  --dim:#7a7265; --faint:#a79d8b;
+  --line:#d4c9b0;
+  --ai:#5a6b7a; --matcha:#7a8c6e; --beni:#b8695a; --yamabuki:#c9a961;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100%}
+body{font-family:Georgia,'Times New Roman','Noto Sans Sinhala',serif;background:var(--paper);color:var(--ink);min-height:100vh;touch-action:pan-y;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+.masthead{padding:44px 0 22px;border-bottom:3px double var(--sumi)}
+.kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ai);margin-bottom:8px}
+h1{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:700;margin:0;display:inline-flex;align-items:center;gap:.35em;flex-wrap:wrap}
+h1 .mark{color:var(--beni);font-style:italic;font-weight:400}
+.eleph{width:1.1em;height:1.1em;flex:none;display:inline-block;vertical-align:middle}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:30px 0 10px}
+.mcard{border:1px solid var(--line);background:var(--card);border-radius:3px;padding:26px 22px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:10px;min-height:200px;transition:.15s}
+.mcard:hover{border-color:var(--sumi);transform:translateY(-2px)}
+.mcard .glyph{font-size:2.8rem;line-height:1;color:var(--beni)}
+.mcard h2{font-size:1.3rem;font-weight:700}
+.mcard p{font-size:.84rem;color:var(--dim);line-height:1.55}
+.mcard .go{margin-top:auto;font-size:.74rem;color:var(--ai);letter-spacing:.14em;text-transform:uppercase}
+.foot{border-top:3px double var(--sumi);margin-top:40px;padding:14px 0 40px;font-size:.8rem;color:var(--dim);text-align:center}
+.foot .mark{color:var(--beni);font-style:italic}
+@media(max-width:560px){.menu-grid{grid-template-columns:1fr}.mcard{min-height:150px}}
+:root[data-theme="dark"]{
+  --paper:#3b3731;
+  --card:#474239;
+  --ink:#e9e2d4;
+  --sumi:#efe8da;
+  --dim:#b3aa99;
+  --faint:#8f8677;
+  --line:#5d5649;
+  --ai:#9db3c4;
+  --matcha:#a3b899;
+  --beni:#d08a76;
+  --yamabuki:#d9b878;
+}
+::selection{background:var(--yamabuki);color:#26221e}
+:root[data-theme="dark"] ::selection{background:var(--yamabuki);color:#26221e}
+:root[data-theme="dark"] .d-back,
+:root[data-theme="dark"] .s-back,
+:root[data-theme="dark"] .lc-back,
+:root[data-theme="dark"] .demo-back{background:#201d1a;border-color:#201d1a;color:#efe8da}
+:root[data-theme="dark"] .d-back .d-word,
+:root[data-theme="dark"] .s-back .s-word,
+:root[data-theme="dark"] .demo-back .d-word,
+:root[data-theme="dark"] .lc-back .lc-lat{color:#efe8da}
+:root[data-theme="dark"] .cta{background:#e9e2d4;border-color:#e9e2d4;color:#26221e}
+:root[data-theme="dark"] .cta-ghost{background:none;color:#e9e2d4;border-color:#8f8677}
+:root[data-theme="dark"] .ans-yes{background:#e9e2d4;border-color:#e9e2d4;color:#26221e}
+:root[data-theme="dark"] .opt.good,
+:root[data-theme="dark"] .tcell.good,
+:root[data-theme="dark"] .tcell.reveal{background:#3e4a3d;border-color:var(--matcha);color:var(--matcha)}
+:root[data-theme="dark"] .opt.bad,
+:root[data-theme="dark"] .tcell.bad{background:#4b3a34;border-color:var(--beni);color:var(--beni)}
+:root[data-theme="dark"] .know.on{background:var(--matcha);border-color:var(--matcha);color:#26221e}
+:root[data-theme="dark"] .mchip{background:#565045}
+:root[data-theme="dark"] .modal{background:rgba(18,16,14,.72)}
+:root[data-theme="dark"] .modal-card{background:#474239;border-color:#8f8677}
+:root[data-theme="dark"] .eleph [fill="#3b3733"]{fill:#ded5c2}
+:root[data-theme="dark"] .eleph [stroke="#3b3733"]{stroke:#ded5c2}
+:root[data-theme="dark"] .eleph [fill="#2c2926"]{fill:#c2b8a4}
+:root[data-theme="dark"] .eleph circle[fill="#f3ecdd"]{fill:#3b3731}
+:root[data-theme="dark"] .eleph path[stroke="#f3ecdd"]{stroke:#3b3731}
+:root[data-theme="dark"] .eleph circle[fill="#e2b478"]{fill:#c9a961}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="kicker">සිංහල · learning</div>
+    <h1>Menu of <span class="mark">sections</span>
+      <svg class="eleph" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="310" cy="180" r="105" fill="#e2b478"/>
+        <path d="M415,250C438,268 442,300 430,326" fill="none" stroke="#3b3733" stroke-width="10" stroke-linecap="round"/>
+        <rect x="212" y="340" width="34" height="84" fill="#3b3733"/>
+        <rect x="258" y="344" width="34" height="80" fill="#3b3733"/>
+        <rect x="330" y="344" width="34" height="80" fill="#3b3733"/>
+        <rect x="376" y="314" width="34" height="110" fill="#3b3733"/>
+        <ellipse cx="305" cy="285" rx="112" ry="88" fill="#3b3733"/>
+        <circle cx="180" cy="240" r="64" fill="#3b3733"/>
+        <circle cx="205" cy="248" r="42" fill="#2c2926"/>
+        <path d="M138,262C104,246 88,208 96,168" fill="none" stroke="#3b3733" stroke-width="30" stroke-linecap="round"/>
+        <path d="M150,282C158,296 170,300 180,296" fill="none" stroke="#f3ecdd" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="163" cy="228" r="7" fill="#f3ecdd"/>
+        <rect x="60" y="168" width="76" height="10" fill="#b98a5a"/>
+        <path d="M66,178h64v64l-32,26l-32,-26z" fill="#f7f1e3"/>
+        <rect x="76" y="190" width="44" height="40" fill="none" stroke="#8a6a44" stroke-width="4"/>
+        <path d="M76,203h44M76,217h44" fill="none" stroke="#8a6a44" stroke-width="3"/>
+        <circle cx="88" cy="203" r="5" fill="#b8695a"/>
+        <circle cx="100" cy="203" r="5" fill="#7a8c6e"/>
+        <circle cx="94" cy="217" r="5" fill="#c9a961"/>
+        <circle cx="106" cy="217" r="5" fill="#5a6b7a"/>
+      </svg>
+    </h1>
+  </header>
+  <div class="menu-grid">
+    <a class="mcard" href="index_en.html">
+      <span class="glyph">෫</span>
+      <h2>Numbers</h2>
+      <p>46 basic cards and 20 advanced. Deck, trainer and quiz.</p>
+      <span class="go">open →</span>
+    </a>
+    <a class="mcard" href="letters_en.html">
+      <span class="glyph">අ</span>
+      <h2>Letters</h2>
+      <p>47 letters by vargas: gutturals, palatals, retroflexes, dentals, labials. Table and test.</p>
+      <span class="go">open →</span>
+    </a>
+  </div>
+  <footer class="foot"><span><span class="mark">සුබ පැතුම්</span> — happy learning!</span></footer>
+</div>
+</body>
+<script>
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+}
+</script>
+</html>

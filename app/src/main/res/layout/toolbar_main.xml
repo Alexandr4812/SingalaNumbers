@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#efe8da"
+    android:padding="8dp"
+    android:gravity="end"
+    android:elevation="4dp">
+
+    <Button
+        android:id="@+id/btnLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="RU"
+        android:textSize="12sp"
+        android:background="@android:color/transparent"
+        android:textColor="#3b3733"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_marginEnd="8dp"/>
+
+    <Button
+        android:id="@+id/btnTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="☀"
+        android:textSize="16sp"
+        android:background="@android:color/transparent"
+        android:textColor="#3b3733"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:layout_marginEnd="8dp"/>
+
+    <Button
+        android:id="@+id/btnAbout"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="?"
+        android:textSize="16sp"
+        android:background="@android:color/transparent"
+        android:textColor="#3b3733"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"/>
+</LinearLayout>
