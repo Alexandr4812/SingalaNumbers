@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Сложные числа · සිංහල</title>
+<style>
+:root{
+  --paper:#efe8da; --card:#f7f1e3;
+  --ink:#342f28; --sumi:#24221f;
+  --dim:#7a7265; --faint:#a79d8b;
+  --line:#d4c9b0;
+  --ai:#5a6b7a;
+  --matcha:#7a8c6e;
+  --beni:#b8695a;
+  --yamabuki:#c9a961;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden;max-width:100%}
+::selection{background:var(--yamabuki);color:var(--sumi)}
+body{
+  font-family:Georgia,'Times New Roman','Noto Sans Sinhala',serif;
+  background:var(--paper);color:var(--ink);min-height:100vh;
+  touch-action:pan-y;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+.masthead{padding:34px 0 18px;border-bottom:3px double var(--sumi);display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.kicker{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ai)}
+h1{font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:700;margin:6px 0 8px;letter-spacing:-.5px}
+h1 .mark{color:var(--beni);font-style:italic;font-weight:400}
+.lede{color:var(--dim);font-size:.9rem;line-height:1.55;max-width:55ch;margin-top:6px}
+.lede b{color:var(--ink)}
+.back{font-family:inherit;font-size:.82rem;color:var(--ai);text-decoration:none;border-bottom:1px dotted var(--ai);padding-bottom:1px}
+.back:hover{color:var(--beni);border-color:var(--beni)}
+
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 18px;align-items:center}
+.chip{background:var(--card);border:1px solid var(--line);padding:6px 13px;font-family:inherit;font-size:.8rem;color:var(--dim);cursor:pointer;border-radius:2px;transition:.15s}
+.chip:hover{border-color:var(--ai);color:var(--ink)}
+.chip.on{border-color:var(--sumi);color:var(--sumi);background:var(--paper)}
+.ghost{background:none;border:none;font-family:inherit;font-size:.78rem;color:var(--ai);cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-style:dotted;margin-left:auto}
+.ghost:hover{color:var(--beni)}
+
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;padding-bottom:40px}
+.dcard{aspect-ratio:5/6;perspective:800px;cursor:pointer;user-select:none;border-radius:3px}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .5s ease}
+.dcard.flipped .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--line);background:var(--card);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;transform:rotateY(0deg) translateZ(0)}
+.d-num{font-size:1.85rem;font-weight:700;color:var(--sumi);line-height:1}
+.d-si{font-size:.78rem;color:var(--ai);text-align:center;line-height:1.3}
+.d-back{transform:rotateY(180deg) translateZ(0);background:var(--sumi);color:var(--paper);border-color:var(--sumi)}
+.d-word{font-weight:600;text-align:center;line-height:1.25;color:var(--paper);padding:0 4px}
+.wl-s{font-size:1.35rem}.wl-m{font-size:1.15rem}.wl-l{font-size:.98rem}.wl-xl{font-size:.85rem}
+.d-meta{font-size:.64rem;color:var(--yamabuki);opacity:.8;text-align:center}
+
+.foot{border-top:3px double var(--sumi);padding:14px 0 40px;font-size:.8rem;color:var(--dim);text-align:center}
+.foot .mark{color:var(--beni);font-style:italic}
+
+@media(max-width:560px){
+  .deck{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+  .toolbar{flex-direction:column;align-items:stretch}
+  .ghost{margin-left:0;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="kicker">සිංහල · сложные числа</div>
+      <h1>Сотни и тысячи <span class="mark">составные</span></h1>
+      <p class="lede">Составные числа: от <b>125</b> до <b>10000</b>. Нажмите на карточку, чтобы увидеть перевод. Сингальский строит их как сумму: сто + двадцать + пять.</p>
+    </div>
+    <a href="index.html" class="back">← к основной колоде</a>
+  </header>
+
+  <div class="toolbar">
+    <button class="chip on" data-f="all">Все · 20</button>
+    <button class="chip" data-f="hund">100–999</button>
+    <button class="chip" data-f="thou">1000+</button>
+    <button class="ghost" id="revealBtn">Показать ответы</button>
+  </div>
+
+  <div class="deck" id="deckGrid"></div>
+
+  <footer class="foot">
+    <span><span class="mark">සුබ පැතුම්</span> — удачи с большими числами!</span>
+  </footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+
+// Сложные числа. Сингальская транскрипция — транслитерация с сингальского написания.
+const ADV=[
+  // сотни с десятками/единицами
+  {n:125, w:'сийя виси панаха', si:'සියය විසි පහ', grp:'hund'},
+  {n:150, w:'сийя панаха', si:'සියය පනහ', grp:'hund'},
+  {n:175, w:'сийя хэттэва панаха', si:'සියය හැත්තෑව පහ', grp:'hund'},
+  {n:225, w:'дэ сийя виси панаха', si:'දෙසියය විසි පහ', grp:'hund'},
+  {n:250, w:'дэ сийя панаха', si:'දෙසියය පනහ', grp:'hund'},
+  {n:375, w:'тун сийя хэттэва панаха', si:'තුන්සියය හැත්තෑව පහ', grp:'hund'},
+  {n:450, w:'хатара сийя панаха', si:'හතරසියය පනහ', grp:'hund'},
+  {n:550, w:'пан сийя панаха', si:'පන්සියය පනහ', grp:'hund'},
+  {n:625, w:'хая сийя виси панаха', si:'හයසියය විසි පහ', grp:'hund'},
+  {n:750, w:'хата сийя панаха', si:'හත්සියය පනහ', grp:'hund'},
+  {n:875, w:'ата сийя хэттэва панаха', si:'අටසියය හැත්තෑව පහ', grp:'hund'},
+  {n:950, w:'нава сийя панаха', si:'නවසියය පනහ', grp:'hund'},
+  // тысячи
+  {n:1500, w:'дахаса панахас', si:'දහස පන්සියය', grp:'thou'},
+  {n:2000, w:'дэ дахаса', si:'දෙදහස', grp:'thou'},
+  {n:2500, w:'дэ дахаса панахас', si:'දෙදහස පන්සියය', grp:'thou'},
+  {n:3000, w:'тун дахаса', si:'තුන්දහස', grp:'thou'},
+  {n:5000, w:'пан дахаса', si:'පන්දහස', grp:'thou'},
+  {n:10000, w:'дахас дахаса', si:'දහස් දහස', grp:'thou'},
+  {n:1265, w:'дахаса дэ сийя хэта панаха', si:'දහස දෙසියය හැට පහ', grp:'thou'},
+  {n:2345, w:'дэ дахаса тун сийя хаталиса панаха', si:'දෙදහස තුන්සියය හතළිස් පහ', grp:'thou'},
+];
+const TOTAL=ADV.length;
+const KEY='sinhala-adv-v1';
+let store=(()=>{try{const s=JSON.parse(localStorage.getItem(KEY));return s&&typeof s==='object'?{known:s.known||{}}:{known:{}};}catch(e){return{known:{}};}})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}};
+const wlClass=w=>{const L=w.length;return L<=12?'wl-s':L<=20?'wl-m':L<=30?'wl-l':'wl-xl';};
+
+let curFilter='all', reveal=false;
+
+function renderDeck(){
+  const g=$('#deckGrid'); g.innerHTML='';
+  const list=ADV.filter(w=>curFilter==='all'?true:w.grp===curFilter);
+  list.forEach(w=>{
+    const d=document.createElement('div');
+    d.className='dcard';
+    d.tabIndex=0; d.setAttribute('role','button');
+    d.innerHTML='<div class="flip-inner">'+
+      '<div class="face d-front">'+
+        '<span class="d-num">'+w.n+'</span>'+
+        '<span class="d-si">'+w.si+'</span>'+
+      '</div>'+
+      '<div class="face d-back">'+
+        '<span class="d-word '+wlClass(w.w)+'">'+w.w+'</span>'+
+        '<span class="d-meta">'+w.n+' · '+w.si+'</span>'+
+      '</div></div>';
+    d.addEventListener('click',()=>d.classList.toggle('flipped'));
+    g.appendChild(d);
+  });
+  if(reveal)$$('#deckGrid .dcard').forEach(c=>c.classList.add('flipped'));
+}
+
+$('.toolbar').addEventListener('click',e=>{
+  const b=e.target.closest('.chip');if(!b)return;
+  $$('.chip').forEach(c=>c.classList.remove('on'));b.classList.add('on');
+  curFilter=b.dataset.f;reveal=false;$('#revealBtn').textContent='Показать ответы';renderDeck();
+});
+$('#revealBtn').onclick=()=>{
+  reveal=!reveal;
+  $$('#deckGrid .dcard').forEach(c=>c.classList.toggle('flipped',reveal));
+  $('#revealBtn').textContent=reveal?'Скрыть ответы':'Показать ответы';
+};
+
+renderDeck();
+</script>
+</body>
+</html>

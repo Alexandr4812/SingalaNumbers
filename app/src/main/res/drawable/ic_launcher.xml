@@ -1,0 +1,41 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp" android:height="512dp"
+    android:viewportWidth="512" android:viewportHeight="512">
+    <!-- бумага -->
+    <path android:fillColor="#f3ecdd" android:pathData="M0,0h512v512h-512z"/>
+    <!-- охристое солнце -->
+    <path android:fillColor="#e2b478" android:pathData="M205,180a105,105 0 1,0 210,0a105,105 0 1,0 -210,0"/>
+    <!-- хвост -->
+    <path android:fillColor="#00000000" android:strokeColor="#3b3733" android:strokeWidth="10" android:strokeLineCap="round" android:pathData="M415,250C438,268 442,300 430,326"/>
+    <!-- ноги -->
+    <path android:fillColor="#3b3733" android:pathData="M212,340h34v84h-34z"/>
+    <path android:fillColor="#3b3733" android:pathData="M258,344h34v80h-34z"/>
+    <path android:fillColor="#3b3733" android:pathData="M330,344h34v80h-34z"/>
+    <path android:fillColor="#3b3733" android:pathData="M376,314h34v110h-34z"/>
+    <!-- туловище -->
+    <path android:fillColor="#3b3733" android:pathData="M193,285a112,88 0 1,0 224,0a112,88 0 1,0 -224,0"/>
+    <!-- голова -->
+    <path android:fillColor="#3b3733" android:pathData="M116,240a64,64 0 1,0 128,0a64,64 0 1,0 -128,0"/>
+    <!-- ухо -->
+    <path android:fillColor="#2c2926" android:pathData="M163,248a42,42 0 1,0 84,0a42,42 0 1,0 -84,0"/>
+    <!-- хобот вверх -->
+    <path android:fillColor="#00000000" android:strokeColor="#3b3733" android:strokeWidth="30" android:strokeLineCap="round" android:pathData="M138,262C104,246 88,208 96,168"/>
+    <!-- бивень -->
+    <path android:fillColor="#00000000" android:strokeColor="#f3ecdd" android:strokeWidth="10" android:strokeLineCap="round" android:pathData="M150,282C158,296 170,300 180,296"/>
+    <!-- глаз -->
+    <path android:fillColor="#f3ecdd" android:pathData="M156,228a7,7 0 1,0 14,0a7,7 0 1,0 -14,0"/>
+    <!-- перекладина вымпела -->
+    <path android:fillColor="#b98a5a" android:pathData="M60,168h76v10h-76z"/>
+    <!-- полотно вымпела -->
+    <path android:fillColor="#f7f1e3" android:pathData="M66,178h64v64l-32,26l-32,-26z"/>
+    <!-- рамка счётов -->
+    <path android:fillColor="#00000000" android:strokeColor="#8a6a44" android:strokeWidth="4" android:pathData="M76,190h44v40h-44z"/>
+    <!-- стержни -->
+    <path android:fillColor="#00000000" android:strokeColor="#8a6a44" android:strokeWidth="3" android:pathData="M76,203h44"/>
+    <path android:fillColor="#00000000" android:strokeColor="#8a6a44" android:strokeWidth="3" android:pathData="M76,217h44"/>
+    <!-- бусины -->
+    <path android:fillColor="#b8695a" android:pathData="M83,203a5,5 0 1,0 10,0a5,5 0 1,0 -10,0"/>
+    <path android:fillColor="#7a8c6e" android:pathData="M95,203a5,5 0 1,0 10,0a5,5 0 1,0 -10,0"/>
+    <path android:fillColor="#c9a961" android:pathData="M89,217a5,5 0 1,0 10,0a5,5 0 1,0 -10,0"/>
+    <path android:fillColor="#5a6b7a" android:pathData="M101,217a5,5 0 1,0 10,0a5,5 0 1,0 -10,0"/>
+</vector>
