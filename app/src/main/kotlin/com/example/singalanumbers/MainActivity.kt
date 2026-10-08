@@ -9,13 +9,14 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
-import android.widget.Toast
 
 class MainActivity : Activity() {
     private lateinit var webView: WebView
     private var currentLanguage = "ru"
     private var isDarkTheme = false
     private var isLanguageSwitch = false
+    private var isInternalBack = false
+    private val navStack = mutableListOf<String>()   // собственная история: id страниц
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,22 +31,25 @@ class MainActivity : Activity() {
         webView.settings.domStorageEnabled = true
         webView.isHorizontalScrollBarEnabled = false
         webView.overScrollMode = View.OVER_SCROLL_NEVER
-        
+
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 applyTheme()
-                if (isLanguageSwitch) {
-                    isLanguageSwitch = false
-                    view?.post { view.clearHistory() }
+                val id = pageIdFromUrl(url ?: return) ?: return
+                when {
+                    // смена языка: та же страница — стек не трогаем
+                    isLanguageSwitch -> isLanguageSwitch = false
+                    // наш собственный шаг назад: стек уже уменьшен
+                    isInternalBack -> isInternalBack = false
+                    // обычный переход вперёд по ссылке
+                    else -> if (navStack.isEmpty() || navStack.last() != id) navStack.add(id)
                 }
             }
         }
-        
+
         webView.webChromeClient = WebChromeClient()
-        
-        val startPage = if (currentLanguage == "en") "menu_en.html" else "menu.html"
-        webView.loadUrl("file:///android_asset/$startPage")
+        webView.loadUrl(urlFor("menu"))
 
         val btnLanguage = findViewById<Button>(R.id.btnLanguage)
         val btnTheme = findViewById<Button>(R.id.btnTheme)
@@ -53,7 +57,7 @@ class MainActivity : Activity() {
 
         btnLanguage.text = currentLanguage.uppercase()
         btnTheme.text = if (isDarkTheme) "☾" else "☀"
-        
+
         val toolbar = findViewById<View>(R.id.toolbar_main)
         updateToolbarColors(toolbar, btnLanguage, btnTheme, btnAbout)
 
@@ -61,19 +65,11 @@ class MainActivity : Activity() {
             currentLanguage = if (currentLanguage == "ru") "en" else "ru"
             prefs.edit().putString("language", currentLanguage).apply()
             btnLanguage.text = currentLanguage.uppercase()
-            
-            val currentUrl = webView.url ?: ""
-            val newUrl = if (currentLanguage == "en") {
-                currentUrl.replace("menu.html", "menu_en.html")
-                    .replace("index.html", "index_en.html")
-                    .replace("letters.html", "letters_en.html")
-                    .replace("advanced.html", "advanced_en.html")
-            } else {
-                currentUrl.replace("_en.html", ".html")
-            }
-            
+
+            // перезагружаем ТЕКУЩУЮ страницу в новом языке
+            val id = pageIdFromUrl(webView.url ?: "") ?: "menu"
             isLanguageSwitch = true
-            webView.loadUrl(newUrl)
+            webView.loadUrl(urlFor(id))
         }
 
         btnTheme.setOnClickListener {
@@ -135,14 +131,26 @@ class MainActivity : Activity() {
         webView.evaluateJavascript("if(typeof setTheme === 'function') setTheme('$theme');", null)
     }
 
+    /* ---------- собственная навигация ---------- */
+
     override fun onBackPressed() {
-        val currentUrl = webView.url ?: ""
-        if (currentUrl.contains("menu.html") || currentUrl.contains("menu_en.html")) {
-            super.onBackPressed()
-        } else if (webView.canGoBack()) {
-            webView.goBack()
+        if (navStack.size > 1) {
+            navStack.removeAt(navStack.size - 1)
+            isInternalBack = true
+            webView.loadUrl(urlFor(navStack.last()))
         } else {
-            super.onBackPressed()
+            super.onBackPressed()   // мы в меню — выходим
         }
+    }
+
+    /** url страницы по её id с учётом текущего языка */
+    private fun urlFor(id: String): String =
+        "file:///android_asset/$id" + (if (currentLanguage == "en") "_en" else "") + ".html"
+
+    /** из url вида file:///android_asset/index_en.html получаем id "index" */
+    private fun pageIdFromUrl(url: String): String? {
+        val name = url.substringAfterLast('/')
+        if (!name.endsWith(".html")) return null
+        return name.removeSuffix(".html").removeSuffix("_en")
     }
 }
