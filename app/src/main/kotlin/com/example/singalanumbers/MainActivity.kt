@@ -15,6 +15,7 @@ class MainActivity : Activity() {
     private lateinit var webView: WebView
     private var currentLanguage = "ru"
     private var isDarkTheme = false
+    private var isLanguageSwitch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,10 @@ class MainActivity : Activity() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 applyTheme()
+                if (isLanguageSwitch) {
+                    isLanguageSwitch = false
+                    view?.post { view.clearHistory() }
+                }
             }
         }
         
@@ -67,6 +72,7 @@ class MainActivity : Activity() {
                 currentUrl.replace("_en.html", ".html")
             }
             
+            isLanguageSwitch = true
             webView.loadUrl(newUrl)
         }
 
@@ -87,7 +93,7 @@ class MainActivity : Activity() {
                 <p style="margin-bottom:10px;"><b>Числа:</b> 46 базовых карточек (от «эка» до «дахаса») и 20 сложных составных чисел. Колода с фильтрами, тренажёр и тест из 10 вопросов.</p>
                 <p style="margin-bottom:10px;"><b>Буквы:</b> 47 букв алфавита, сгруппированных по варгам — горловые, нёбные, черепные, зубные, губные. Таблица с переворотом и тест в обе стороны.</p>
                 <p style="margin-bottom:10px;"><b>Знаки гласных (пилли):</b> 14 знаков, которые крепятся к согласным и меняют их гласный звук.</p>
-                <p style="margin-bottom:14px; font-style:italic; color:#7a7265;">В помощь изучающим.</p>
+                <p style="margin-bottom:14px; font-style:italic; color:#7a7265;">В помощь изучающ.</p>
                 <p style="margin-bottom:4px; color:#5a6b7a; font-size:0.9em;">Версия 1.0</p>
                 <hr style="border:none; border-top:1px solid #d4c9b0; margin:12px 0;"/>
                 <p style="font-size:0.9em;">По вопросам, связанным с приложением, обращайтесь:<br/><b style="color:#9c3b23;">asankhatabhikkhu@gmail.com</b></p>
@@ -130,7 +136,10 @@ class MainActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        if (webView.canGoBack()) {
+        val currentUrl = webView.url ?: ""
+        if (currentUrl.contains("menu.html") || currentUrl.contains("menu_en.html")) {
+            super.onBackPressed()
+        } else if (webView.canGoBack()) {
             webView.goBack()
         } else {
             super.onBackPressed()
